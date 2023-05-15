@@ -41,7 +41,7 @@ class Utils:
     @staticmethod
     def get_data_from_archive():
         """
-            method created to retreive data from an archive or a path indicated
+            method created to retrieve data from an archive or a path indicated
         """
         file = None
         tries = 3
@@ -95,7 +95,7 @@ class Utils:
     @staticmethod
     def get_price_per_day(payload: str, shift) -> str:
         """
-            method created to recreive price depending on the day schema set up
+            method created to received price depending on the day schema set up
         """
         day_type = Utils.get_day_type(payload)
         return shift['price'][day_type]
@@ -103,9 +103,8 @@ class Utils:
     @staticmethod
     def format_input(payload):
         """
-            formater input type must be in this format 'MO03:00-13:00'
+            formatter input type must be in this format 'MO03:00-13:00'
         """
-        # print(f"formater :{str(payload[2:].rsplit('-'))}")
         start = payload[2:].rsplit('-')[0]
         end = payload[2:].rsplit('-')[1]
         return [start, end]
