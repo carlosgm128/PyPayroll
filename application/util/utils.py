@@ -1,7 +1,6 @@
-import sys
 from datetime import datetime
 
-from domain.const.shift import Constantes
+from infra.config.shift import Constantes
 from domain.const.DaysOfTheWeek import DayOfTheWeekEnum
 from domain.models.day import Day
 
@@ -38,8 +37,6 @@ class Utils:
         if '.txt' not in payload:
             raise IOError("extencion invalida de archivo, solo soportada .txt")
 
-
-
     @staticmethod
     def get_time(payload):
         """
@@ -50,7 +47,6 @@ class Utils:
             return datetime.strptime(str(payload), '%H:%M')
         except ValueError:
             raise ValueError(f'conversion erronea de: {payload}')
-
 
     @staticmethod
     def clean_data(payload: list[str]) -> list[str]:
