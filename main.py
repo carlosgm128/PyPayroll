@@ -9,6 +9,9 @@ from payment.Payment import Payment
 
 
 def main():
+    """
+        application entry point
+    """
     archive = Utils.get_data_from_archive()
     data = Utils.clean_data(archive)
     for user in data:

@@ -85,7 +85,7 @@ class Utils:
     @staticmethod
     def clean_data(payload):
         """
-            method created to clean '\\n' from the archive readed
+            method created to clean '\\n' from the archive read
         """
         res = []
         for sub in payload:
