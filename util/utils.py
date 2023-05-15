@@ -2,7 +2,7 @@ import sys
 from datetime import datetime
 
 from const.shift import Constantes
-from models.DaysOfTheWeek import DayOfTheWeekEnum
+from const.DaysOfTheWeek import DayOfTheWeekEnum
 from models.day import Day
 
 
@@ -33,7 +33,7 @@ class Utils:
     @staticmethod
     def check_extension(payload):
         """
-            check file extention otherwise raise an exception
+            check file extension otherwise raise an exception
         """
         if '.txt' not in payload:
             raise IOError("extencion invalida de archivo, solo soportada .txt")
@@ -41,21 +41,33 @@ class Utils:
     @staticmethod
     def get_data_from_archive():
         """
-            method created to retreive data from an archive or a path indicated
+            method created to retrieve data from an archive or a path indicated
         """
         file = None
-        if len(sys.argv) > 1 and sys.argv[1].find('--path') != -1:
-            path = sys.argv[1].rsplit('=')[1]
-            Utils.check_extension(path)
-        else:
-            path = input("inserte la ruta del archivo de pagos para procesar ")
-            Utils.check_extension(path)
-        file = open(path, 'rt', encoding='UTF-8')
+        tries = 3
+        while tries != 0:
+            try:
+                if len(sys.argv) > 1 and sys.argv[1].find('--path') != -1:
+                    path = sys.argv[1].rsplit('=')[1]
+                    Utils.check_extension(path)
+                else:
+                    path = input("inserte la ruta del archivo de pagos para procesar ")
+                    Utils.check_extension(path)
+                file = open(path, 'rt', encoding='UTF-8')
+                if file is not None:
+                    break
+            except FileNotFoundError:
+                print(f'Archivo no encontrado. {tries -1} intentos restantes')
+                if tries == 1:
+                    print('numero de intentos posibles terminados\nsaliendo...')
+                    sys.exit()
+            finally:
+                tries -= 1
         try:
             data = file.readlines()
             return data
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Archivo con el nombre de {path} no encontrado")
+        except FileNotFoundError as ex:
+            raise FileNotFoundError(f"Archivo con el nombre de {path} no encontrado\nError\n {ex}")
         finally:
             file.close()
 
@@ -68,12 +80,13 @@ class Utils:
         try:
             return datetime.strptime(str(payload), '%H:%M')
         except ValueError:
-            print(f"payload {payload}")
+            raise ValueError(f'conversion erronea de: {payload}')
+
 
     @staticmethod
     def clean_data(payload):
         """
-            method created to clean '\\n' from the archive readed
+            method created to clean '\\n' from the archive read
         """
         res = []
         for sub in payload:
@@ -83,7 +96,7 @@ class Utils:
     @staticmethod
     def get_price_per_day(payload: str, shift) -> str:
         """
-            method created to recreive price depending on the day schema set up
+            method created to received price depending on the day schema set up
         """
         day_type = Utils.get_day_type(payload)
         return shift['price'][day_type]
@@ -91,9 +104,8 @@ class Utils:
     @staticmethod
     def format_input(payload):
         """
-            formater input type must be in this format 'MO03:00-13:00'
+            formatter input type must be in this format 'MO03:00-13:00'
         """
-        # print(f"formater :{str(payload[2:].rsplit('-'))}")
         start = payload[2:].rsplit('-')[0]
         end = payload[2:].rsplit('-')[1]
         return [start, end]
