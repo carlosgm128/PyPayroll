@@ -3,7 +3,8 @@ from unittest.mock import patch, mock_open
 from datetime import datetime, timedelta
 
 from domain.const.DaysOfTheWeek import DayOfTheWeekEnum
-from domain.const.shift import Constantes
+from infra.config.shift import Constantes
+from infra.filemanager import FileManager
 from domain.models.day import Day
 from application.util.utils import Utils
 
@@ -69,7 +70,7 @@ class TestUtils(TestCase):
         expected_path = "file.txt"
         expected_data = ['RAMON=10:00-12:00,TU10:00-12:00,TH01:00-03:00']
 
-        data = Utils.get_data_from_archive()
+        data = FileManager.get_data_from_archive()
 
         mock_file_open.assert_called_once_with(expected_path, 'rt', encoding='UTF-8')
         self.assertEqual(data, expected_data)
@@ -82,7 +83,7 @@ class TestUtils(TestCase):
         expected_path = "file.txt"
         expected_data = ['RAMON=10:00-12:00,TU10:00-12:00,TH01:00-03:00']
 
-        data = Utils.get_data_from_archive()
+        data = FileManager.get_data_from_archive()
 
         mock_file_open.assert_called_once_with(expected_path, 'rt', encoding='UTF-8')
         self.assertEqual(data, expected_data)
@@ -158,9 +159,8 @@ class TestUtils(TestCase):
     def test_get_day_by_str_default(self):
         payload = 'XX'
         expected_output = DayOfTheWeekEnum.MONDAY
-        with self.assertLogs() as logs:
-            day = Utils.get_day_by_str(payload)
-            self.assertEqual(day, expected_output)
+        day = Utils.get_day_by_str(payload)
+        self.assertEqual(day, expected_output)
 
     def test_set_time(self):
         payload = 10

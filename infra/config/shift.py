@@ -12,8 +12,6 @@ class Constantes:
     def midnight(self):
         return 'MIDNIGHT'
 
-
-
     @staticmethod
     def midnight_shift() -> dict:
         return {

@@ -1,4 +1,4 @@
-from domain.const.shift import Constantes
+from infra.config.shift import Constantes
 from domain.models.User import User
 from application.util.utils import Utils
 
