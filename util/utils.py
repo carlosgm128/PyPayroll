@@ -33,7 +33,7 @@ class Utils:
     @staticmethod
     def check_extension(payload):
         """
-            check file extention otherwise raise an exception
+            check file extension otherwise raise an exception
         """
         if '.txt' not in payload:
             raise IOError("extencion invalida de archivo, solo soportada .txt")
