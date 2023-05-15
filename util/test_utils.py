@@ -1,5 +1,6 @@
 from unittest import TestCase
 from unittest.mock import patch, mock_open
+from datetime import datetime
 
 from util.utils import Utils
 
@@ -12,6 +13,7 @@ class TestUtils(TestCase):
         self.payload3 = "MARIO=SU00:00-23:59"
         self.day_MO = 'MO10:00-12:00'
         self.day_TU = 'TU10:00-12:00'
+        self.time1 = '21:00'
 
     def test_get_days_worked(self):
         expected_output = ['10:00-12:00', 'TU10:00-12:00', 'TH01:00-03:00']
@@ -82,7 +84,14 @@ class TestUtils(TestCase):
         self.assertEqual(data, expected_data)
 
     def test_get_time(self):
-        self.fail()
+        expected_output = datetime.strptime(self.time1, '%H:%M')
+        self.assertEqual(Utils.get_time(self.time1), expected_output)
+
+    def test_get_time_invalid(self):
+        payload = "not_a_time"
+        expected_output = None
+        with self.assertRaises(ValueError):
+            Utils.get_time(payload)
 
     def test_clean_data(self):
         self.fail()

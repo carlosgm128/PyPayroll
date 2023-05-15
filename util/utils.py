@@ -80,7 +80,8 @@ class Utils:
         try:
             return datetime.strptime(str(payload), '%H:%M')
         except ValueError:
-            print(f"payload {payload}")
+            raise ValueError(f'conversion erronea de: {payload}')
+
 
     @staticmethod
     def clean_data(payload):
