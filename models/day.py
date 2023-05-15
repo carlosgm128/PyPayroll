@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from models.DaysOfTheWeek import DayOfTheWeekEnum
+from const.DaysOfTheWeek import DayOfTheWeekEnum
 
 
 class Day:

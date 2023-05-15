@@ -2,7 +2,7 @@ import sys
 from datetime import datetime
 
 from const.shift import Constantes
-from models.DaysOfTheWeek import DayOfTheWeekEnum
+from const.DaysOfTheWeek import DayOfTheWeekEnum
 from models.day import Day
 
 
