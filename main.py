@@ -1,5 +1,5 @@
-from application import main
+from application import PyPayroll
 
 
 if __name__ == '__main__':
-    main.run()
+    PyPayroll.run()

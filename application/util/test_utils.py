@@ -63,7 +63,7 @@ class TestUtils(TestCase):
         self.assertRaises(IOError, Utils.check_extension, payload)
 
     @patch('builtins.input', return_value="file.txt")
-    @patch('sys.argv', ['main.py', '--path=file.txt'])
+    @patch('sys.argv', ['PyPayroll.py', '--path=file.txt'])
     @patch('builtins.open', new_callable=mock_open,
            read_data=f'RAMON=10:00-12:00,TU10:00-12:00,TH01:00-03:00')
     def test_get_data_from_archive(self, mock_file_open, mock_input):
