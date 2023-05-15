@@ -54,6 +54,8 @@ class Utils:
                     path = input("inserte la ruta del archivo de pagos para procesar ")
                     Utils.check_extension(path)
                 file = open(path, 'rt', encoding='UTF-8')
+                if file is not None:
+                    break
             except FileNotFoundError:
                 print(f'Archivo no encontrado. {tries -1} intentos restantes')
                 if tries == 1:
