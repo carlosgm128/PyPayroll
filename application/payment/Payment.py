@@ -1,6 +1,6 @@
-from const.shift import Constantes
-from models.User import User
-from util.utils import Utils
+from domain.const.shift import Constantes
+from domain.models.User import User
+from application.util.utils import Utils
 
 
 class Payment:

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from const.DaysOfTheWeek import DayOfTheWeekEnum
+from domain.const.DaysOfTheWeek import DayOfTheWeekEnum
 
 
 class Day:

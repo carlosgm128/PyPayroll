@@ -1,9 +1,9 @@
 import sys
 from datetime import datetime
 
-from const.shift import Constantes
-from const.DaysOfTheWeek import DayOfTheWeekEnum
-from models.day import Day
+from domain.const.shift import Constantes
+from domain.const.DaysOfTheWeek import DayOfTheWeekEnum
+from domain.models.day import Day
 
 
 class Utils:
@@ -38,38 +38,7 @@ class Utils:
         if '.txt' not in payload:
             raise IOError("extencion invalida de archivo, solo soportada .txt")
 
-    @staticmethod
-    def get_data_from_archive():
-        """
-            method created to retrieve data from an archive or a path indicated
-        """
-        file = None
-        tries = 3
-        while tries != 0:
-            try:
-                if len(sys.argv) > 1 and sys.argv[1].find('--path') != -1:
-                    path = sys.argv[1].rsplit('=')[1]
-                    Utils.check_extension(path)
-                else:
-                    path = input("inserte la ruta del archivo de pagos para procesar ")
-                    Utils.check_extension(path)
-                file = open(path, 'rt', encoding='UTF-8')
-                if file is not None:
-                    break
-            except FileNotFoundError:
-                print(f'Archivo no encontrado. {tries -1} intentos restantes')
-                if tries == 1:
-                    print('numero de intentos posibles terminados\nsaliendo...')
-                    sys.exit()
-            finally:
-                tries -= 1
-        try:
-            data = file.readlines()
-            return data
-        except FileNotFoundError as ex:
-            raise FileNotFoundError(f"Archivo con el nombre de {path} no encontrado\nError\n {ex}")
-        finally:
-            file.close()
+
 
     @staticmethod
     def get_time(payload):
@@ -84,7 +53,7 @@ class Utils:
 
 
     @staticmethod
-    def clean_data(payload):
+    def clean_data(payload: list[str]) -> list[str]:
         """
             method created to clean '\\n' from the archive read
         """
@@ -94,9 +63,18 @@ class Utils:
         return res
 
     @staticmethod
-    def get_price_per_day(payload: str, shift) -> str:
+    def get_price_per_day(payload: str, shift: dict) -> str:
         """
             method created to received price depending on the day schema set up
+            payload expected is
+            shift expected format is {
+                        'start': 9,
+                        'end': 18,
+                        'price': {
+                            "LV": 15,
+                            "SD": 20
+                        }
+                    }
         """
         day_type = Utils.get_day_type(payload)
         return shift['price'][day_type]
@@ -132,10 +110,10 @@ class Utils:
                 return DayOfTheWeekEnum.MONDAY
 
     @staticmethod
-    def set_time(payload) -> datetime:
+    def set_time(payload: str) -> datetime:
         """
             create a time based on int hour provided
-
+            espected payload format is 10:00
         """
         try:
             if type(payload) != int:
@@ -144,7 +122,7 @@ class Utils:
                 return datetime.strptime('23:59', '%H:%M')
             return datetime.strptime(str(payload), '%H')
         except ValueError:
-            print(f"payload set_time {payload}")
+            raise ValueError(f"Hora invalida proporcionada {payload}")
 
     @staticmethod
     def get_worked_time(payload: Day, shift: dict):

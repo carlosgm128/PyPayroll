@@ -1,4 +1,4 @@
-from models.day import Day
+from domain.models.day import Day
 
 
 class User:
